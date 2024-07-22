@@ -12,8 +12,8 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:ems="10"
-        android:inputType="text"
         android:hint="Name"
+        android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,11 +25,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="The full name must not contain any numbers or special characters"
+        android:textColor="@color/red"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:textColor="@color/red"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@id/editTextText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextText" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Button"
+        app:layout_constraintTop_toBottomOf="@id/error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

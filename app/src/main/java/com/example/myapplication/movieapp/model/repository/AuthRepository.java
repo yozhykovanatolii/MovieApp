@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,6 +34,23 @@ public class AuthRepository {
         this.firebaseStorage = firebaseStorage;
     }
 
+    public LiveData<User> getUserById(){
+        MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser != null){
+            firestore.collection("users").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    userMutableLiveData.setValue(task.getResult().toObject(User.class));
+                }else{
+                    userMutableLiveData.setValue(null);
+                }
+            });
+        }else{
+            userMutableLiveData.setValue(null);
+        }
+        return userMutableLiveData;
+    }
+
     public LiveData<User> getUserByLogin(String login){
         MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         firestore.collection("users").whereEqualTo("login", login).get().addOnCompleteListener(task -> {
@@ -47,34 +65,32 @@ public class AuthRepository {
         return userMutableLiveData;
     }
 
-    public LiveData<String> signInWithLoginAndPassword(String login, String password){
-        MutableLiveData<String> token = new MutableLiveData<>();
-        firestore.collection("users").whereEqualTo("login", login).whereEqualTo("password", password).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful() && !task.getResult().isEmpty()){
-                    for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                        token.setValue(getAuthorizationUserToken(documentSnapshot.toObject(User.class).getEmail(), password));
-                    }
-                }else{
-                    token.setValue(null);
+    public LiveData<String> getUserEmailByLoginAndPassword(String login, String password){
+        MutableLiveData<String> email = new MutableLiveData<>();
+        firestore.collection("users").whereEqualTo("login", login).whereEqualTo("password", password).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful() && !task.getResult().isEmpty()){
+                for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                    email.setValue(documentSnapshot.toObject(User.class).getEmail());
                 }
+            }else{
+                email.setValue(null);
+            }
+        });
+        return email;
+    }
+
+    public LiveData<String> getAuthorizationUserToken(String email, String password){
+        MutableLiveData<String> token = new MutableLiveData<>();
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(!task.isSuccessful()){
+                token.setValue(null);
+                Log.i("Exceptions", "Error", task.getException());
+            }else{
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                token.setValue(firebaseUser.getUid());
             }
         });
         return token;
-    }
-
-    public String getAuthorizationUserToken(String email, String password){
-        MutableLiveData<String> token = new MutableLiveData<>();
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                token.setValue(firebaseUser.getUid());
-            }else{
-                token.setValue(null);
-            }
-        });
-        return token.getValue();
     }
 
     public void createUserWithEmailAndPassword(User newUser){
@@ -97,6 +113,10 @@ public class AuthRepository {
                 Log.i("SignUp", "Error", task.getException());
             }
         });
+    }
+
+    public void signOut(){
+        firebaseAuth.signOut();
     }
 
 }

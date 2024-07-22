@@ -26,12 +26,24 @@ public class AuthViewModel extends ViewModel {
         authRepository.createUserWithEmailAndPassword(newUser);
     }
 
+    public void signOut(){
+        authRepository.signOut();
+    }
+
+    public LiveData<User> getUserById(){
+        return authRepository.getUserById();
+    }
+
     public LiveData<User> getUserByLogin(String login){
         return authRepository.getUserByLogin(login);
     }
 
-    public LiveData<String> signInWithLoginAndPassword(String login, String password){
-        return null;
+    public LiveData<String> getUserEmailByLoginAndPassword(String login, String password){
+        return authRepository.getUserEmailByLoginAndPassword(login, password);
+    }
+
+    public LiveData<String> getAuthorizationUserToken(String email, String password){
+        return authRepository.getAuthorizationUserToken(email, password);
     }
 
     public LiveData<Boolean> isPasswordWriteCorrect(String password){
