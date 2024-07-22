@@ -10,20 +10,17 @@ public class User {
     private String password;
     private String email;
     private String phoneNumber;
-    private String photo;
+    private String photo = "photo";
     private List<String> favouriteCars = new ArrayList<>();
 
     public User(){}
 
-    public User(String id, String fullName, String login, String password, String email, String phoneNumber, String photo, List<String> favouriteCars) {
-        this.id = id;
+    public User(String fullName, String login, String password, String email, String phoneNumber) {
         this.fullName = fullName;
         this.login = login;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.photo = photo;
-        this.favouriteCars = favouriteCars;
     }
 
     public String getId() {
