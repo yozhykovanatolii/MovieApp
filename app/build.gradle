@@ -32,7 +32,7 @@ android {
 
 dependencies {
     //Firebase
-    implementation platform(libs.firebase.bom)
+    implementation platform('com.google.firebase:firebase-bom:32.2.2')
     implementation libs.firebase.analytics
 
     //Firebase Cloud Firestore
@@ -42,7 +42,7 @@ dependencies {
     implementation libs.firebase.storage
 
     //Firebase Authentication
-    implementation libs.firebase.auth
+    implementation("com.google.firebase:firebase-auth")
 
     //Retrofit
     implementation libs.retrofit

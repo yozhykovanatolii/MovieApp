@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void signUp(){
-        authViewModel.createUserWithEmailAndPassword(new User("Yozhykov", "yozhyk3", "123456", "yozhykovanatoliy@gmail.com", "38058585"));
+        authViewModel.createUserWithEmailAndPassword(new User("Yozhykov Andrey", "tolya23", "56naruto", "tolya228@gmail.com", "38058585"));
     }
 
     private void signIn(){
-        authViewModel.getUserEmailByLoginAndPassword("yozhyk3", "57naruto").observe(this, email -> {
+        authViewModel.getUserEmailByLoginAndPassword("tolya23", "56naruto").observe(this, email -> {
             if(email != null){
                 System.out.println(email);
                 getAuthorizationToken(email);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAuthorizationToken(String email){
-        authViewModel.getAuthorizationUserToken(email, "57naruto").observe(this, s -> {
+        authViewModel.getAuthorizationUserToken(email, "56naruto").observe(this, s -> {
             if(s != null){
                 System.out.println(s);
                 goToMainWindow();
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToMainWindow(){
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), MainActivity2.class);
+            Intent intent = new Intent(view.getContext(), MainActivity3.class);
             startActivity(intent);
         });
     }

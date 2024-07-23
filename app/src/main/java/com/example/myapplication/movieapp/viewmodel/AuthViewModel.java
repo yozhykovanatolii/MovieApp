@@ -54,6 +54,14 @@ public class AuthViewModel extends ViewModel {
         authRepository.updatePasswordInFirebaseUser(user, newPassword);
     }
 
+    public void updateEmailAndPassword(String newEmail, String newPassword, String email, String password){
+        authRepository.updateEmailAndPassword(newEmail, newPassword, email, password);
+    }
+
+    public void updateUser(User user){
+        authRepository.updateUser(user);
+    }
+
     public LiveData<Boolean> isPasswordConfirm(String newPassword, String confirmPassword){
         if(isPasswordsEqual(newPassword, confirmPassword)){
             return new MutableLiveData<>(true);

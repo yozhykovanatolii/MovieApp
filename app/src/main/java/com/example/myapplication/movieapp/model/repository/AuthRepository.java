@@ -148,6 +148,29 @@ public class AuthRepository {
         });
     }
 
+    public void updateEmailAndPassword(String newEmail, String newPassword, String email, String password){
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        if(firebaseUser != null){
+            firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    //firebaseUser.updatePassword(newPassword);
+                    firebaseUser.updateEmail(newEmail);
+                }
+            });
+        }else{
+            System.out.println("Error Firebase User");
+        }
+    }
+
+    public void updateUser(User user){
+        firestore.collection("users").document(user.getId()).set(user).addOnCompleteListener(task -> {
+            if(!task.isSuccessful()){
+                Log.i("UpdateUser", "Something wrong", task.getException());
+            }
+        });
+    }
+
     public void signUp(User newUser){
         firestore.collection("users").document(newUser.getId()).set(newUser).addOnCompleteListener(task -> {
             if(!task.isSuccessful()){
