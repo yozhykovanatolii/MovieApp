@@ -38,12 +38,28 @@ public class AuthViewModel extends ViewModel {
         return authRepository.getUserByLogin(login);
     }
 
+    public LiveData<User> getUserByEmail(String email){
+        return authRepository.getUserByEmail(email);
+    }
+
     public LiveData<String> getUserEmailByLoginAndPassword(String login, String password){
         return authRepository.getUserEmailByLoginAndPassword(login, password);
     }
 
     public LiveData<String> getAuthorizationUserToken(String email, String password){
         return authRepository.getAuthorizationUserToken(email, password);
+    }
+
+    public void updatePasswordInFirebaseUser(User user, String newPassword){
+        authRepository.updatePasswordInFirebaseUser(user, newPassword);
+    }
+
+    public LiveData<Boolean> isPasswordConfirm(String newPassword, String confirmPassword){
+        if(isPasswordsEqual(newPassword, confirmPassword)){
+            return new MutableLiveData<>(true);
+        }else{
+            return new MutableLiveData<>(false);
+        }
     }
 
     public LiveData<Boolean> isPasswordWriteCorrect(String password){
@@ -76,6 +92,10 @@ public class AuthViewModel extends ViewModel {
         }else{
             return new MutableLiveData<>(true);
         }
+    }
+
+    public boolean isPasswordsEqual(String newPassword, String confirmPassword){
+        return newPassword.equals(confirmPassword);
     }
 
     public boolean isPasswordLargeThanOrEqualEight(String password){

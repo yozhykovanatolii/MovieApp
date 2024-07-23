@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.myapplication.movieapp.model.firebase.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -18,6 +20,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.Objects;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -48,6 +51,20 @@ public class AuthRepository {
         }else{
             userMutableLiveData.setValue(null);
         }
+        return userMutableLiveData;
+    }
+
+    public LiveData<User> getUserByEmail(String email){
+        MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+        firestore.collection("users").whereEqualTo("email", email).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful() && !task.getResult().isEmpty()){
+                for(QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                    userMutableLiveData.setValue(documentSnapshot.toObject(User.class));
+                }
+            }else{
+                userMutableLiveData.setValue(null);
+            }
+        });
         return userMutableLiveData;
     }
 
@@ -91,6 +108,30 @@ public class AuthRepository {
             }
         });
         return token;
+    }
+
+    public void updatePasswordInFirebaseUser(User user, String newPassword){
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), user.getPassword());
+        if(firebaseUser != null){
+            firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    firebaseUser.updatePassword(newPassword);
+                    updatePasswordInFirestore(newPassword, user.getId());
+                }
+            });
+        }
+    }
+
+    private void updatePasswordInFirestore(String newPassword, String userId){
+        firestore.collection("users").document(userId).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(!task.isSuccessful()){
+                    Log.i("UpdatePassword", "Password didn't reset");
+                }
+            }
+        });
     }
 
     public void createUserWithEmailAndPassword(User newUser){

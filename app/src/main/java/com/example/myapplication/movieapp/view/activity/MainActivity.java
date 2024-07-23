@@ -43,16 +43,17 @@ public class MainActivity extends AppCompatActivity {
         textView = findViewById(R.id.error);
         button = findViewById(R.id.button);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-        //signUp();
         signIn();
+        //signUp();
+        //goToMainWindow();
     }
 
     private void signUp(){
-        authViewModel.createUserWithEmailAndPassword(new User("Yozhykov", "yozhyk", "123456", "gamet5550@gmail.com", "38058585"));
+        authViewModel.createUserWithEmailAndPassword(new User("Yozhykov", "yozhyk3", "123456", "yozhykovanatoliy@gmail.com", "38058585"));
     }
 
     private void signIn(){
-        authViewModel.getUserEmailByLoginAndPassword("yozhyk", "123456").observe(this, email -> {
+        authViewModel.getUserEmailByLoginAndPassword("yozhyk3", "57naruto").observe(this, email -> {
             if(email != null){
                 System.out.println(email);
                 getAuthorizationToken(email);
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAuthorizationToken(String email){
-        authViewModel.getAuthorizationUserToken(email, "123456").observe(this, s -> {
+        authViewModel.getAuthorizationUserToken(email, "57naruto").observe(this, s -> {
             if(s != null){
                 System.out.println(s);
                 goToMainWindow();
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToMainWindow(){
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), FavouriteMoviesActivity.class);
+            Intent intent = new Intent(view.getContext(), MainActivity2.class);
             startActivity(intent);
         });
     }
