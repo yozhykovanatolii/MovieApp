@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goToMainWindow(){
         button.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), MainWindowActivity.class);
+            Intent intent = new Intent(view.getContext(), FavouriteMoviesActivity.class);
             startActivity(intent);
         });
     }

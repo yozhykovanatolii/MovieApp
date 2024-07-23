@@ -6,10 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.myapplication.movieapp.model.firebase.User;
 import com.example.myapplication.movieapp.model.remote.ApiPoint;
 import com.example.myapplication.movieapp.model.remote.Movie;
 import com.example.myapplication.movieapp.model.remote.Result;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -111,5 +116,33 @@ public class MovieRepository {
             }
         });
         return films;
+    }
+
+    public LiveData<List<Integer>> getFavouriteMovies(){
+        MutableLiveData<List<Integer>> favouriteMovies = new MutableLiveData<>();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser != null){
+            firestore.collection("users").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    favouriteMovies.setValue(Objects.requireNonNull(task.getResult().toObject(User.class)).getFavouriteCars());
+                }else{
+                    favouriteMovies.setValue(null);
+                }
+            });
+        }else{
+            favouriteMovies.setValue(null);
+        }
+        return favouriteMovies;
+    }
+
+    public void updateFavouriteMovies(List<Integer> movies){
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser != null){
+            firestore.collection("users").document(firebaseUser.getUid()).update("favouriteCars", movies).addOnCompleteListener(task -> {
+                if(!task.isSuccessful()){
+                    Log.i("FavouriteMovies", "Failed while updating");
+                }
+            });
+        }
     }
 }

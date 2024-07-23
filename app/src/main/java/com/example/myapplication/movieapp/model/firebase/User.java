@@ -11,7 +11,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private String photo = "photo";
-    private List<String> favouriteCars = new ArrayList<>();
+    private List<Integer> favouriteCars = new ArrayList<>();
 
     public User(){}
 
@@ -79,11 +79,11 @@ public class User {
         this.photo = photo;
     }
 
-    public List<String> getFavouriteCars() {
+    public List<Integer> getFavouriteCars() {
         return favouriteCars;
     }
 
-    public void setFavouriteCars(List<String> favouriteCars) {
+    public void setFavouriteCars(List<Integer> favouriteCars) {
         this.favouriteCars = favouriteCars;
     }
 }

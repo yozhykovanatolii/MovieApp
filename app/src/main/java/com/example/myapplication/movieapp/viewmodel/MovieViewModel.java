@@ -36,4 +36,12 @@ public class MovieViewModel extends ViewModel {
     public LiveData<List<Movie>> searchFilm(String query){
         return movieRepository.searchFilms(query);
     }
+
+    public LiveData<List<Integer>> getFavouriteFilms(){
+        return movieRepository.getFavouriteMovies();
+    }
+
+    public void updateFavouriteFilms(List<Integer> films){
+        movieRepository.updateFavouriteMovies(films);
+    }
 }
