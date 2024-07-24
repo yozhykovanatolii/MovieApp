@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">MovieApp</string>
+    <string name="signIn">Sign In</string>
+    <string name="signUp">Sign Up</string>
+    <string name="signOut">Sign Out</string>
+    <string name="myProfile">My profile</string>
+    <string name="login">Login</string>
+    <string name="fullName">Full name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="phoneNumber">Phone number</string>
+    <string name="confirmPassword">Confirm password</string>
+    <string name="you_already_have_account">Do you already have an account?</string>
+    <string name="forgotPassword">Forgot password?</string>
+    <string name="forgotPasswordInstruction">You forgot your password? Don\'t worry, please enter your recovery email address</string>
+    <string name="submit">Submit</string>
+    <string name="resetPassword">Reset password?</string>
+    <string name="resetPasswordInstruction">Please enter your new password to update the password</string>
+    <string name="favouriteMovies">Favourite Movies</string>
+    <string name="notSave">Not save</string>
+    <string name="lets_find_your_favourite_movie">Let\'s find and save your favourite movie</string>
 </resources>
