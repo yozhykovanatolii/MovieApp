@@ -11,13 +11,15 @@
     <string name="phoneNumber">Phone number</string>
     <string name="enter_login">Enter login</string>
     <string name="enter_password">Enter password</string>
+    <string name="enter_email">Enter email</string>
     <string name="confirmPassword">Confirm password</string>
     <string name="you_already_have_account">Do you already have an account?</string>
     <string name="forgotPassword">Forgot password?</string>
     <string name="forgotPasswordInstruction">You forgot your password? Don\'t worry, please enter your recovery email address</string>
     <string name="submit">Submit</string>
     <string name="resetPassword">Reset password?</string>
-    <string name="resetPasswordInstruction">Please enter your new password to update the password</string>
+    <string name="resetPasswordForButton">Reset password</string>
+    <string name="resetPasswordInstruction">Please enter your new password to update the \n password</string>
     <string name="favouriteMovies">Favourite Movies</string>
     <string name="notSave">Not save</string>
     <string name="lets_find_your_favourite_movie">Let\'s find and save your favourite movie</string>

@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
     public void signInUser(View view){
         String login = Objects.requireNonNull(signInLogin.getText()).toString();
         String password = Objects.requireNonNull(signInPassword.getText()).toString();
+        hideErrorMessages();
         progressButton.loading();
         authViewModel.getUserEmailByLoginAndPassword(login, password).observe(this, email -> {
             if(email != null){
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(token);
                 goToMainWindow();
             }else{
+                progressButton.finished();
                 Toast.makeText(getApplicationContext(), "Oops something wrong", Toast.LENGTH_LONG).show();
             }
         });
