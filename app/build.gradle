@@ -56,6 +56,9 @@ dependencies {
     implementation libs.volley
     implementation libs.picasso
 
+    //ProgressButton
+    implementation (libs.hellosagar.progressbutton)
+
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity

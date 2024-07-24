@@ -5,41 +5,190 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_blue"
     tools:context=".view.activity.MainActivity">
 
-    <EditText
-        android:id="@+id/editTextText"
+    <TextView
+        android:id="@+id/sighIn"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="wrap_content"
+        android:text="@string/signIn"
+        android:textColor="@color/white"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline3" />
 
     <TextView
-        android:id="@+id/error"
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/forgotPassword"
+        android:textSize="16sp"
+        android:textColor="@color/gray_white"
+        android:textStyle="bold"
+        android:onClick="goToForgotPasswordActivity"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/errorPasswordSignIn"/>
+
+    <TextView
+        android:id="@+id/youHaveAlready"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/you_already_have_account"
+        android:textColor="@color/gray"
+        android:textStyle="bold"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintTop_toBottomOf="@id/progressButtonInSignIn"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/signUp"/>
+
+    <TextView
+        android:id="@+id/signUp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:text="@string/signUp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:onClick="goToSignUpActivity"
+        app:layout_constraintTop_toBottomOf="@id/progressButtonInSignIn"
+        app:layout_constraintStart_toEndOf="@id/youHaveAlready"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"/>
+
+    <TextView
+        android:id="@+id/errorLoginSignIn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="The full name must not contain any numbers or special characters"
-        android:textColor="@color/red"
+        android:layout_marginTop="10dp"
+        android:text="@string/incorrect_login"
+        android:textColor="@color/red_dark"
         android:textSize="15sp"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextText" />
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toBottomOf="@id/login"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/guideline2" />
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/errorPasswordSignIn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/incorrect_password"
+        android:textColor="@color/red_dark"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/password"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="@color/dark_blue"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/guideline4">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signInLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:hint="@string/enter_login"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/text_cursor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="@color/dark_blue"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/errorLoginSignIn"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signInPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/text_cursor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <dev.sagar.progress_button.ProgressButton
+        android:id="@+id/progressButtonInSignIn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        app:corner_radius="30dp"
+        app:default_text="@string/signIn"
+        app:finish_text="@string/signIn"
+        android:textSize="25sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:backgroundTint="@color/red"
+        android:onClick="signInUser"
+        app:layout_constraintDimensionRatio="1:0.13"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/forgotPassword"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@id/error"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="52dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="128dp" />
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

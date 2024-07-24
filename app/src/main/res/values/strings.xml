@@ -9,6 +9,8 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="phoneNumber">Phone number</string>
+    <string name="enter_login">Enter login</string>
+    <string name="enter_password">Enter password</string>
     <string name="confirmPassword">Confirm password</string>
     <string name="you_already_have_account">Do you already have an account?</string>
     <string name="forgotPassword">Forgot password?</string>
@@ -19,4 +21,14 @@
     <string name="favouriteMovies">Favourite Movies</string>
     <string name="notSave">Not save</string>
     <string name="lets_find_your_favourite_movie">Let\'s find and save your favourite movie</string>
+    <string name="incorrect_login">There is no such login.</string>
+    <string name="incorrect_fullName">The full name must not contain any numbers or special characters</string>
+    <string name="incorrect_password">The password must be 8 or more characters or you entered the wrong password.</string>
+    <string name="incorrect_email">This mail either does not exist in the system or does not have an @ or domain.</string>
+    <string name="incorrect_phone">The number of characters after +38 must be 9</string>
+    <string name="notChoosePhoto">The photo must be choose</string>
+    <string name="count_of_password">The password must be 8 or more characters</string>
+    <string name="email_incorrect">This mail does not have an @ or domain.</string>
+    <string name="incorrect_confirmed_password">The passwords don\'t match.</string>
+    <string name="exist_login">Such a login already exists</string>
 </resources>
