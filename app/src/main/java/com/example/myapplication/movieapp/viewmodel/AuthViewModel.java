@@ -86,14 +86,6 @@ public class AuthViewModel extends ViewModel {
         }
     }
 
-    public LiveData<Boolean> isPhoneNumberWriteCorrect(String phoneNumber){
-        if(isPhoneNumberCorrect(phoneNumber)){
-            return new MutableLiveData<>(true);
-        }else{
-            return new MutableLiveData<>(false);
-        }
-    }
-
     public LiveData<Boolean> isFullNameWriteCorrect(String fullName){
         if(isFullNameHasNumbersAndSpecialSymbols(fullName)){
             return new MutableLiveData<>(false);

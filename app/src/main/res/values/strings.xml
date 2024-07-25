@@ -12,6 +12,8 @@
     <string name="enter_login">Enter login</string>
     <string name="enter_password">Enter password</string>
     <string name="enter_email">Enter email</string>
+    <string name="enter_full_name">Enter full name</string>
+    <string name="enter_phone">+380</string>
     <string name="confirmPassword">Confirm password</string>
     <string name="you_already_have_account">Do you already have an account?</string>
     <string name="forgotPassword">Forgot password?</string>

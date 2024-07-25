@@ -1,5 +1,6 @@
 package com.example.myapplication.movieapp.model.repository;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.Objects;
 import java.util.concurrent.Executor;
@@ -142,7 +144,7 @@ public class AuthRepository {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     newUser.setId(user.getUid());
-                    signUp(newUser);
+                    saveImageInStorage(newUser);
                 }
             }
         });
@@ -154,7 +156,7 @@ public class AuthRepository {
         if(firebaseUser != null){
             firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
-                    //firebaseUser.updatePassword(newPassword);
+                    firebaseUser.updatePassword(newPassword);
                     firebaseUser.updateEmail(newEmail);
                 }
             });
@@ -167,6 +169,21 @@ public class AuthRepository {
         firestore.collection("users").document(user.getId()).set(user).addOnCompleteListener(task -> {
             if(!task.isSuccessful()){
                 Log.i("UpdateUser", "Something wrong", task.getException());
+            }
+        });
+    }
+
+    private void saveImageInStorage(User user){
+        Uri image = Uri.parse(user.getPhoto());
+        StorageReference storageReference = firebaseStorage.getReference().child("image/" + image.getLastPathSegment());
+        storageReference.putFile(image).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                storageReference.getDownloadUrl().addOnCompleteListener(task1 -> {
+                    user.setPhoto(task1.getResult().toString());
+                    signUp(user);
+                });
+            }else{
+                Log.i("Errors", "Exception", task.getException());
             }
         });
     }

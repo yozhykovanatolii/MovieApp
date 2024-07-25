@@ -10,18 +10,17 @@ public class User implements Serializable {
     private String login;
     private String password;
     private String email;
-    private String phoneNumber;
-    private String photo = "photo";
+    private String photo;
     private List<Integer> favouriteCars = new ArrayList<>();
 
     public User(){}
 
-    public User(String fullName, String login, String password, String email, String phoneNumber) {
+    public User(String login, String fullName, String email, String password, String photo) {
         this.fullName = fullName;
         this.login = login;
         this.password = password;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.photo = photo;
     }
 
     public String getId() {
@@ -62,14 +61,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getPhoto() {

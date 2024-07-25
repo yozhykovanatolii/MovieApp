@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="@string/signIn"
         android:textColor="@color/white"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/guideline2"
         app:layout_constraintStart_toEndOf="@id/guideline"
