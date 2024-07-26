@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goToMainWindow(){
-        Intent intent = new Intent(getApplicationContext(), MainActivity3.class);
+        Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
         startActivity(intent);
     }
 

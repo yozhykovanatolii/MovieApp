@@ -2,8 +2,10 @@ package com.example.myapplication.movieapp.model.remote;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class Movie {
+
+public class Movie implements Serializable {
     @SerializedName("id")
     private int idMovie;
     @SerializedName("title")

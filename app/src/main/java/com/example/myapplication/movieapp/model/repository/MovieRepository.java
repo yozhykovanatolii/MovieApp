@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,8 +39,8 @@ public class MovieRepository {
         this.apiPoint = apiPoint;
     }
 
-    public LiveData<List<Movie>> getTopRatedFilmsFromApi(){
-        MutableLiveData<List<Movie>> topRatedFilms = new MutableLiveData<>();
+    public LiveData<ArrayList<Movie>> getTopRatedFilmsFromApi(){
+        MutableLiveData<ArrayList<Movie>> topRatedFilms = new MutableLiveData<>();
         apiPoint.getTopRatedMovies().enqueue(new Callback<Result>() {
             @Override
             public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
@@ -144,5 +145,22 @@ public class MovieRepository {
                 }
             });
         }
+    }
+
+    public LiveData<User> getCurrentUser(){
+        MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if(firebaseUser != null){
+            firestore.collection("users").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    userMutableLiveData.setValue(task.getResult().toObject(User.class));
+                }else{
+                    userMutableLiveData.setValue(null);
+                }
+            });
+        }else{
+            userMutableLiveData.setValue(null);
+        }
+        return userMutableLiveData;
     }
 }

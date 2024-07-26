@@ -35,4 +35,6 @@
     <string name="email_incorrect">This mail does not have an @ or domain.</string>
     <string name="incorrect_confirmed_password">The passwords don\'t match.</string>
     <string name="exist_login">Such a login already exists</string>
+    <string name="topRatedMovies">Top Rated</string>
+    <string name="nowPlayingMovies">Now Playing</string>
 </resources>

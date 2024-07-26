@@ -52,9 +52,10 @@ dependencies {
     implementation libs.hilt.android
     annotationProcessor libs.hilt.compiler
 
-    //Volley and Picasso
+    //Volley, Picasso and Glide
     implementation libs.volley
     implementation libs.picasso
+    implementation libs.glide
 
     //ProgressButton
     implementation (libs.hellosagar.progressbutton)
