@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="235dp"
-    android:layout_height="300dp"
+    android:layout_height="270dp"
     android:layout_marginEnd="10dp"
     android:backgroundTint="@color/dark_blue"
     app:cardCornerRadius="15dp">
@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            app:layout_constraintDimensionRatio="1:0.9"
+            app:layout_constraintDimensionRatio="1:0.8"
             app:srcCompat="@drawable/poster"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
