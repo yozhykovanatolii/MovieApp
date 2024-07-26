@@ -173,7 +173,7 @@ public class AuthRepository {
         });
     }
 
-    private void saveImageInStorage(User user){
+    public void saveImageInStorage(User user){
         Uri image = Uri.parse(user.getPhoto());
         StorageReference storageReference = firebaseStorage.getReference().child("image/" + image.getLastPathSegment());
         storageReference.putFile(image).addOnCompleteListener(task -> {

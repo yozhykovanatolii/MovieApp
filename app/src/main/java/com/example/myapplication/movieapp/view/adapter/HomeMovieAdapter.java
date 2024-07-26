@@ -16,13 +16,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class HomeMovieAdapter extends RecyclerView.Adapter<HomeMovieAdapter.ViewHolder> {
     private List<Movie> movies;
     private TextConverterUtil converter;
     private RecyclerViewInterface recyclerViewInterface;
     private int recycler_id;
 
-    public MovieAdapter(List<Movie> movies, RecyclerViewInterface recyclerViewInterface, int recycler_id){
+    public HomeMovieAdapter(List<Movie> movies, RecyclerViewInterface recyclerViewInterface, int recycler_id){
         this.movies = movies;
         this.recyclerViewInterface = recyclerViewInterface;
         this.recycler_id = recycler_id;

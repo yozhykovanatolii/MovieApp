@@ -3,7 +3,8 @@
     <string name="signIn">Sign In</string>
     <string name="signUp">Sign Up</string>
     <string name="signOut">Sign Out</string>
-    <string name="myProfile">My profile</string>
+    <string name="save">Save</string>
+    <string name="myProfile">My Profile</string>
     <string name="login">Login</string>
     <string name="fullName">Full name</string>
     <string name="email">Email</string>

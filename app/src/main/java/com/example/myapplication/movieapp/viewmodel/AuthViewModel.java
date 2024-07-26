@@ -26,6 +26,10 @@ public class AuthViewModel extends ViewModel {
         authRepository.createUserWithEmailAndPassword(newUser);
     }
 
+    public void saveImageInStorage(User user){
+        authRepository.saveImageInStorage(user);
+    }
+
     public void signOut(){
         authRepository.signOut();
     }

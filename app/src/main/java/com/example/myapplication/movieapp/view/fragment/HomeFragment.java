@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +17,10 @@ import android.view.ViewGroup;
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.remote.Movie;
 import com.example.myapplication.movieapp.view.activity.MovieDetailActivity;
-import com.example.myapplication.movieapp.view.adapter.MovieAdapter;
+import com.example.myapplication.movieapp.view.adapter.HomeMovieAdapter;
 import com.example.myapplication.movieapp.view.adapter.RecyclerViewInterface;
 import com.example.myapplication.movieapp.viewmodel.MovieViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -32,7 +30,7 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     private MovieViewModel movieViewModel;
     private List<Movie> topRatedMovies, nowPlayingMovies;
     private RecyclerView recyclerViewTopRated, recyclerViewNowPlaying;
-    private MovieAdapter movieAdapterTopRated, movieAdapterNowPlaying;
+    private HomeMovieAdapter movieAdapterTopRated, movieAdapterNowPlaying;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,14 +77,14 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     private void initRecyclerViewTopRated(List<Movie> movies){
         topRatedMovies = movies;
-        movieAdapterTopRated = new MovieAdapter(movies, this, recyclerViewTopRated.getId());
+        movieAdapterTopRated = new HomeMovieAdapter(movies, this, recyclerViewTopRated.getId());
         recyclerViewTopRated.setAdapter(movieAdapterTopRated);
         recyclerViewTopRated.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
     }
 
     private void initRecyclerViewNowPlaying(List<Movie> movies){
         nowPlayingMovies = movies;
-        movieAdapterNowPlaying = new MovieAdapter(movies, this, recyclerViewNowPlaying.getId());
+        movieAdapterNowPlaying = new HomeMovieAdapter(movies, this, recyclerViewNowPlaying.getId());
         recyclerViewNowPlaying.setAdapter(movieAdapterNowPlaying);
         recyclerViewNowPlaying.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
     }

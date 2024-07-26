@@ -8,15 +8,254 @@
     tools:context=".view.fragment.ProfileFragment">
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/myProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My Profile"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        android:text="@string/myProfile"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         android:textColor="@color/white"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/guideline25" />
+
+    <TextView
+        android:id="@+id/incorrectLoginProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/exist_login"
+        android:textColor="@color/red_dark"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintTop_toBottomOf="@id/loginProfile"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"/>
+
+    <TextView
+        android:id="@+id/incorrectFullNameProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/incorrect_fullName"
+        android:textColor="@color/red_dark"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/fullNameProfile"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"/>
+
+    <TextView
+        android:id="@+id/incorrectEmailProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/incorrect_email"
+        android:textColor="@color/red_dark"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/emailProfile"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"/>
+
+    <TextView
+        android:id="@+id/incorrectPasswordProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="@string/incorrect_password"
+        android:textColor="@color/red_dark"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/passwordProfile"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/loginProfile"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="@color/dark_blue"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/guideline27">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profileLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:hint="@string/enter_login"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/text_cursor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/fullNameProfile"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="@color/dark_blue"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/incorrectLoginProfile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profileFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:hint="@string/enter_full_name"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/text_cursor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailProfile"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="@color/dark_blue"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/incorrectFullNameProfile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profileEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:hint="@string/enter_email"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/text_cursor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/passwordProfile"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="15dp"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="@color/dark_blue"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/incorrectEmailProfile">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/profilePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:hint="@string/enter_password"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@drawable/text_cursor" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/userPhoto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/avatar"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/guideline26"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full" />
+
+    <dev.sagar.progress_button.ProgressButton
+        android:id="@+id/updateProfile"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        app:corner_radius="30dp"
+        app:default_text="@string/save"
+        app:finish_text="@string/save"
+        android:textSize="25sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:backgroundTint="@color/red"
+        android:onClick="signUp"
+        app:layout_constraintEnd_toStartOf="@id/guideline24"
+        app:layout_constraintTop_toBottomOf="@id/incorrectPasswordProfile"/>
+
+    <dev.sagar.progress_button.ProgressButton
+        android:id="@+id/signOut"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        app:corner_radius="30dp"
+        app:default_text="@string/signOut"
+        app:finish_text="@string/signOut"
+        android:textSize="25sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:backgroundTint="@color/blue"
+        app:layout_constraintStart_toEndOf="@id/guideline23"
+        app:layout_constraintTop_toBottomOf="@id/incorrectPasswordProfile"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline24"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline25"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="62dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="174dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

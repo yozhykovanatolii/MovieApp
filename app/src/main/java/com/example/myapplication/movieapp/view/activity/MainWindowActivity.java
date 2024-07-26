@@ -45,9 +45,14 @@ public class MainWindowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_window);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         navigationView = findViewById(R.id.navigationBottom);
-        showFragment(savedInstanceState);
         getCurrentUser();
+        showFragment(savedInstanceState);
         navigationView.setOnItemSelectedListener(this::onItemClicked);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     private void showFragment(Bundle savedInstanceState){
