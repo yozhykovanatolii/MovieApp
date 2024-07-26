@@ -125,6 +125,20 @@ public class AuthRepository {
         }
     }
 
+    public void reauthenticatedUser(String email, String password){
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        if(firebaseUser != null){
+            firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    System.out.println("Perfect");
+                }else{
+                    System.out.println("Bad luck");
+                }
+            });
+        }
+    }
+
     private void updatePasswordInFirestore(String newPassword, String userId){
         firestore.collection("users").document(userId).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

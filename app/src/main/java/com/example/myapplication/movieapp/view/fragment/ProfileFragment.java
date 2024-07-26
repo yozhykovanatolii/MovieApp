@@ -3,6 +3,7 @@ package com.example.myapplication.movieapp.view.fragment;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -22,10 +23,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.firebase.User;
 import com.example.myapplication.movieapp.view.activity.MainActivity;
 import com.example.myapplication.movieapp.viewmodel.AuthViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
@@ -289,6 +295,32 @@ public class ProfileFragment extends Fragment {
         }
         updateProfileButton.finished();
         Toast.makeText(getContext(), "Profile was updated", Toast.LENGTH_LONG).show();
+        refreshIconOnNavigationBottom();
+        getAuthorizationToken();
+    }
+
+    private void getAuthorizationToken(){
+        authViewModel.getAuthorizationUserToken(currentUser.getEmail(), currentUser.getPassword()).observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String token) {
+                if(token != null){
+                    Toast.makeText(getContext(), token, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void refreshIconOnNavigationBottom(){
+        BottomNavigationView bottomNavigationView = requireActivity().findViewById(R.id.navigationBottom);
+        bottomNavigationView.setItemIconTintList(null);
+        Glide.with(requireContext()).load(userPhoto.getDrawable()).apply(RequestOptions.circleCropTransform()).into(new CustomTarget<Drawable>() {
+            @Override
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                bottomNavigationView.getMenu().findItem(R.id.profile).setIcon(resource);
+            }
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {}
+        });
     }
 
     private void updateUser(String login, String fullName, String email, String password){

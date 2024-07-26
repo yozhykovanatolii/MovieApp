@@ -30,6 +30,10 @@ public class AuthViewModel extends ViewModel {
         authRepository.saveImageInStorage(user);
     }
 
+    public void reauthenticatedUser(String email, String password){
+        authRepository.reauthenticatedUser(email, password);
+    }
+
     public void signOut(){
         authRepository.signOut();
     }
