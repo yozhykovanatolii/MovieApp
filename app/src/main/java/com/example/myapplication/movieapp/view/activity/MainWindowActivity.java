@@ -1,8 +1,11 @@
 package com.example.myapplication.movieapp.view.activity;
 
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.firebase.User;
+import com.example.myapplication.movieapp.receiver.InternetReceiver;
 import com.example.myapplication.movieapp.view.fragment.FavouriteMoviesFragment;
 import com.example.myapplication.movieapp.view.fragment.HomeFragment;
 import com.example.myapplication.movieapp.view.fragment.ProfileFragment;
@@ -38,12 +42,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MainWindowActivity extends AppCompatActivity {
     private MovieViewModel movieViewModel;
     private BottomNavigationView navigationView;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_window);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        broadcastReceiver = new InternetReceiver();
         navigationView = findViewById(R.id.navigationBottom);
         getCurrentUser();
         showFragment(savedInstanceState);
@@ -51,8 +57,15 @@ public class MainWindowActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void showFragment(Bundle savedInstanceState){

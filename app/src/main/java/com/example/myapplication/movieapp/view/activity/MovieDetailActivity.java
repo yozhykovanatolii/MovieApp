@@ -1,6 +1,9 @@
 package com.example.myapplication.movieapp.view.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -10,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.remote.Movie;
+import com.example.myapplication.movieapp.receiver.InternetReceiver;
 import com.example.myapplication.movieapp.viewmodel.MovieViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -23,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class MovieDetailActivity extends AppCompatActivity {
     private MovieViewModel movieViewModel;
     private Movie movie;
+    private BroadcastReceiver broadcastReceiver;
     private ShapeableImageView posterMovie;
     private TextView titleMovie, reviewAverage, releaseDate, descriptionText;
     private FloatingActionButton favouriteButton;
@@ -33,9 +38,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         movie = (Movie) getIntent().getSerializableExtra("Movie");
+        broadcastReceiver = new InternetReceiver();
         initComponents();
         initComponentsData();
         isMovieInFavourite();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void initComponents(){

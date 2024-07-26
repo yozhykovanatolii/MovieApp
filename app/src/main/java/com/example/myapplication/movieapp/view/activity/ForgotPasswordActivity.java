@@ -1,6 +1,9 @@
 package com.example.myapplication.movieapp.view.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.firebase.User;
+import com.example.myapplication.movieapp.receiver.InternetReceiver;
 import com.example.myapplication.movieapp.viewmodel.AuthViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -28,14 +32,28 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private TextInputEditText forgotPasswordEmail;
     private TextView errorEmailInForgotPassword;
     private ProgressButton progressButtonInForgotPassword;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        broadcastReceiver = new InternetReceiver();
         initComponents();
         editEmailInForgotPassword();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void initComponents(){

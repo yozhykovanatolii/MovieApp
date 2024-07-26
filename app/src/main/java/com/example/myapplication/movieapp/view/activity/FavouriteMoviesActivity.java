@@ -1,5 +1,8 @@
 package com.example.myapplication.movieapp.view.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -13,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.remote.Movie;
+import com.example.myapplication.movieapp.receiver.InternetReceiver;
 import com.example.myapplication.movieapp.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
@@ -25,14 +29,28 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class FavouriteMoviesActivity extends AppCompatActivity {
     private MovieViewModel movieViewModel;
     private ArrayList<Movie> favouriteMovies;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite_movies);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        broadcastReceiver = new InternetReceiver();
         favouriteMovies = new ArrayList<>();
         getFavouriteMovies();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void getFavouriteMovies() {

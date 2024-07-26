@@ -1,6 +1,9 @@
 package com.example.myapplication.movieapp.view.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.movieapp.R;
 import com.example.myapplication.movieapp.model.firebase.User;
+import com.example.myapplication.movieapp.receiver.InternetReceiver;
 import com.example.myapplication.movieapp.viewmodel.AuthViewModel;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,6 +33,7 @@ import dev.sagar.progress_button.ProgressButton;
 public class SignUpActivity extends AppCompatActivity {
     private AuthViewModel authViewModel;
     private Uri uri;
+    private BroadcastReceiver broadcastReceiver;
     private TextInputEditText signUpLogin, signUpFullName, signUpEmail, signUpPassword;
     private TextView incorrectLogin, incorrectFullName, incorrectEmail, incorrectPassword, photoNotChoose;
     private ProgressButton progressButtonInSignUp;
@@ -39,11 +44,24 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        broadcastReceiver = new InternetReceiver();
         initComponents();
         editLoginInSignUp();
         editFullNameInSignUp();
         editEmailInSignUp();
         editPasswordInSignUp();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     private void initComponents(){

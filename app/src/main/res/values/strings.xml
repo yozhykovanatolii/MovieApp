@@ -38,4 +38,6 @@
     <string name="exist_login">Such a login already exists</string>
     <string name="topRatedMovies">Top Rated</string>
     <string name="nowPlayingMovies">Now Playing</string>
+    <string name="retry">Retry</string>
+    <string name="noInternetConnection">Oops, no internet connection. \nPlease check your internet connection and retry</string>
 </resources>
