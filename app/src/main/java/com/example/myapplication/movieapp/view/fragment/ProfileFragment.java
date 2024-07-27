@@ -293,21 +293,7 @@ public class ProfileFragment extends Fragment {
         }
         updateProfileButton.finished();
         Toast.makeText(getContext(), "Profile was updated", Toast.LENGTH_LONG).show();
-        /*
         refreshIconOnNavigationBottom();
-        getAuthorizationToken();
-         */
-    }
-
-    private void getAuthorizationToken(){
-        authViewModel.getAuthorizationToken(currentUser.getEmail(), currentUser.getPassword()).observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String token) {
-                if(token != null){
-                    Toast.makeText(getContext(), token, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 
     private void refreshIconOnNavigationBottom(){
@@ -353,6 +339,4 @@ public class ProfileFragment extends Fragment {
             userPhoto.setImageURI(data.getData());
         }
     }
-
-
 }

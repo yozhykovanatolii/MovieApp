@@ -77,7 +77,7 @@ public class AuthViewModel extends ViewModel {
     }
 
     public LiveData<Boolean> isFullNameWriteCorrect(String fullName){
-        return new MutableLiveData<>(isFullNameHasNumbersAndSpecialSymbols(fullName));
+        return new MutableLiveData<>(!isFullNameHasNumbersAndSpecialSymbols(fullName));
     }
 
     public boolean isPasswordsEqual(String newPassword, String confirmPassword){
