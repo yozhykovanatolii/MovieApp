@@ -43,15 +43,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.MainActivity3"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.MainActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.FavouriteMoviesActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.activity.MainWindowActivity"
             android:exported="false" />
         <activity

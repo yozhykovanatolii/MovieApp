@@ -1,6 +1,5 @@
 package com.example.myapplication.movieapp.view.activity;
 
-import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,28 +8,17 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.movieapp.R;
-import com.example.myapplication.movieapp.model.firebase.User;
-import com.example.myapplication.movieapp.model.remote.Movie;
 import com.example.myapplication.movieapp.receiver.InternetReceiver;
 import com.example.myapplication.movieapp.viewmodel.AuthViewModel;
-import com.example.myapplication.movieapp.viewmodel.MovieViewModel;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -157,9 +145,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getAuthorizationToken(String email, String password){
-        authViewModel.getAuthorizationUserToken(email, password).observe(this, token -> {
+        authViewModel.getAuthorizationToken(email, password).observe(this, token -> {
             if(token != null){
-                System.out.println(token);
                 goToMainWindow();
             }else{
                 progressButton.finished();

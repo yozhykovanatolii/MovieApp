@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    id 'com.google.gms.google-services'
     id 'com.google.dagger.hilt.android'
 }
 
@@ -33,7 +32,6 @@ android {
 dependencies {
     //Firebase
     implementation platform('com.google.firebase:firebase-bom:32.2.2')
-    implementation libs.firebase.analytics
 
     //Firebase Cloud Firestore
     implementation libs.firebase.firestore
@@ -52,8 +50,7 @@ dependencies {
     implementation libs.hilt.android
     annotationProcessor libs.hilt.compiler
 
-    //Volley, Picasso and Glide
-    implementation libs.volley
+    //Picasso and Glide
     implementation libs.picasso
     implementation libs.glide
 

@@ -36,8 +36,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-
-        //getNowPlayingMovies();
     }
 
     @Override
@@ -53,9 +51,6 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
         recyclerViewNowPlaying = view.findViewById(R.id.recyclerViewNowPlaying);
         getTopRatedMovies();
         getNowPlayingMovies();
-        //printNowPlayingMovies();
-        //initRecyclerViewTopRated();
-        //initRecyclerViewNowPlaying();
     }
 
 
@@ -97,13 +92,10 @@ public class HomeFragment extends Fragment implements RecyclerViewInterface {
 
     @Override
     public void onItemClick(int recycler_id, int position) {
-        Movie movie;
         if(recycler_id == recyclerViewTopRated.getId()){
-            movie = topRatedMovies.get(position);
+            goToMovieDetail(topRatedMovies.get(position));
         }else{
-            movie = nowPlayingMovies.get(position);
+            goToMovieDetail(nowPlayingMovies.get(position));
         }
-        System.out.println(movie.getTitleMovie());
-        goToMovieDetail(movie);
     }
 }

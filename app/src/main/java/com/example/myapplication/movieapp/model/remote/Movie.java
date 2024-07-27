@@ -32,47 +32,23 @@ public class Movie implements Serializable {
         return idMovie;
     }
 
-    public void setIdMovie(int idMovie) {
-        this.idMovie = idMovie;
-    }
-
     public String getTitleMovie() {
         return titleMovie;
-    }
-
-    public void setTitleMovie(String titleMovie) {
-        this.titleMovie = titleMovie;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPosterPhoto() {
         return posterPhoto;
-    }
-
-    public void setPosterPhoto(String posterPhoto) {
-        this.posterPhoto = posterPhoto;
     }
 
     public String getRelease() {
         return release;
     }
 
-    public void setRelease(String release) {
-        this.release = release;
-    }
-
     public double getReview_average() {
         return review_average;
-    }
-
-    public void setReview_average(double review_average) {
-        this.review_average = review_average;
     }
 }

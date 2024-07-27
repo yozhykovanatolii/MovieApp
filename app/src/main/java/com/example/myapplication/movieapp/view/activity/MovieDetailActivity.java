@@ -20,6 +20,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicIntegerArray;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -30,7 +31,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private BroadcastReceiver broadcastReceiver;
     private ShapeableImageView posterMovie;
     private TextView titleMovie, reviewAverage, releaseDate, descriptionText;
-    private FloatingActionButton favouriteButton;
+    private FloatingActionButton favouriteMovieButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void initComponents(){
         initTextsView();
         posterMovie = findViewById(R.id.posterMovie);
-        favouriteButton = findViewById(R.id.favouriteButton);
+        favouriteMovieButton = findViewById(R.id.favouriteButton);
     }
 
     private void initTextsView(){
@@ -83,28 +84,28 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     public void addToFavourite(View view){
-        movieViewModel.getFavouriteFilms().observe(this, movies -> {
+        movieViewModel.getUserFavouriteFilms().observe(this, movies -> {
             if(movies != null){
                 checkMovieInFavourites(movies);
             }
         });
     }
 
-    private void checkMovieInFavourites(List<Integer> movies){
-        if(!movies.contains(movie.getIdMovie())){
-            movies.add(movie.getIdMovie());
-            favouriteButton.setImageResource(R.drawable.baseline_favorite_24);
+    private void checkMovieInFavourites(List<Integer> moviesId){
+        if(!moviesId.contains(movie.getIdMovie())){
+            moviesId.add(movie.getIdMovie());
+            favouriteMovieButton.setImageResource(R.drawable.baseline_favorite_24);
         }else{
-            movies.remove(Integer.valueOf(movie.getIdMovie()));
-            favouriteButton.setImageResource(R.drawable.baseline_favorite_border_24);
+            moviesId.remove(Integer.valueOf(movie.getIdMovie()));
+            favouriteMovieButton.setImageResource(R.drawable.baseline_favorite_border_24);
         }
-        movieViewModel.updateFavouriteFilms(movies);
+        movieViewModel.updateFavouriteFilms(moviesId);
     }
 
     private void isMovieInFavourite(){
-        movieViewModel.getFavouriteFilms().observe(this, movies -> {
+        movieViewModel.getUserFavouriteFilms().observe(this, movies -> {
             if(movies != null && movies.contains(movie.getIdMovie())){
-                favouriteButton.setImageResource(R.drawable.baseline_favorite_24);
+                favouriteMovieButton.setImageResource(R.drawable.baseline_favorite_24);
             }
         });
     }

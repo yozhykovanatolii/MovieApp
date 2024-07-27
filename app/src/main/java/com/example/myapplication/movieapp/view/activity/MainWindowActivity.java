@@ -14,6 +14,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,6 +29,7 @@ import com.example.myapplication.movieapp.view.fragment.FavouriteMoviesFragment;
 import com.example.myapplication.movieapp.view.fragment.HomeFragment;
 import com.example.myapplication.movieapp.view.fragment.ProfileFragment;
 import com.example.myapplication.movieapp.view.fragment.SearchMovieFragment;
+import com.example.myapplication.movieapp.viewmodel.AuthViewModel;
 import com.example.myapplication.movieapp.viewmodel.MovieViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -40,7 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainWindowActivity extends AppCompatActivity {
-    private MovieViewModel movieViewModel;
+    private AuthViewModel authViewModel;
     private BottomNavigationView navigationView;
     private BroadcastReceiver broadcastReceiver;
 
@@ -48,11 +50,11 @@ public class MainWindowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_window);
-        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         broadcastReceiver = new InternetReceiver();
         navigationView = findViewById(R.id.navigationBottom);
+        showHomeFragment(savedInstanceState);
         getCurrentUser();
-        showFragment(savedInstanceState);
         navigationView.setOnItemSelectedListener(this::onItemClicked);
     }
 
@@ -68,7 +70,7 @@ public class MainWindowActivity extends AppCompatActivity {
         unregisterReceiver(broadcastReceiver);
     }
 
-    private void showFragment(Bundle savedInstanceState){
+    private void showHomeFragment(Bundle savedInstanceState){
         if(savedInstanceState == null){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainer, HomeFragment.class, null)
@@ -77,7 +79,7 @@ public class MainWindowActivity extends AppCompatActivity {
     }
 
     private void getCurrentUser(){
-        movieViewModel.getCurrentUser().observe(this, user -> {
+        authViewModel.getCurrentUser().observe(this, user -> {
             if(user != null){
                 loadAvatar(user.getPhoto());
             }
@@ -88,8 +90,7 @@ public class MainWindowActivity extends AppCompatActivity {
         navigationView.setItemIconTintList(null);
         Glide.with(this)
                 .load(photoPath)
-                .apply(RequestOptions.circleCropTransform()
-                        .placeholder(R.drawable.baseline_account_circle_24))
+                .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.baseline_account_circle_24))
                 .into(new CustomTarget<Drawable>() {
                     @Override
                     public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
@@ -103,61 +104,26 @@ public class MainWindowActivity extends AppCompatActivity {
 
     private boolean onItemClicked(MenuItem item){
         if(item.getItemId() == R.id.home){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, HomeFragment.class, null)
-                    .setReorderingAllowed(true)
-                    .commit();
+            showFragment(HomeFragment.class);
             return true;
         }if(item.getItemId() == R.id.search){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, SearchMovieFragment.class, null)
-                    .setReorderingAllowed(true)
-                    .commit();
+            showFragment(SearchMovieFragment.class);
             return true;
         }if(item.getItemId() == R.id.favorite){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, FavouriteMoviesFragment.class, null)
-                    .setReorderingAllowed(true)
-                    .commit();
+            showFragment(FavouriteMoviesFragment.class);
             return true;
         }if(item.getItemId() == R.id.profile){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, ProfileFragment.class, null)
-                    .setReorderingAllowed(true)
-                    .commit();
+            showFragment(ProfileFragment.class);
             return true;
         }
         return false;
     }
 
-
-    private void getFavouriteMovies(){
+    private void showFragment(Class<? extends Fragment> fragment){
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, fragment, null)
+                .setReorderingAllowed(true)
+                .commit();
     }
 
-    private void checkMovieInFavourites(List<Integer> movies){
-        if(!movies.contains(375)){
-            movies.add(375);
-            //button.setBackgroundColor(Color.parseColor("#1877F2"));
-        }else{
-            movies.remove(Integer.valueOf(375));
-            //button.setBackgroundColor(Color.parseColor("#FF0000"));
-        }
-        movieViewModel.updateFavouriteFilms(movies);
-    }
-
-    public void addToFavourite(View view){
-        movieViewModel.getFavouriteFilms().observe(this, movies -> {
-            if(movies != null){
-                //checkMovieInFavourites(movies);
-            }
-        });
-    }
-
-    private void isMovieInFavourite(){
-        movieViewModel.getFavouriteFilms().observe(this, movies -> {
-            if(movies != null && movies.contains(375)){
-                //button.setBackgroundColor(Color.parseColor("#1877F2"));
-            }
-        });
-    }
 }

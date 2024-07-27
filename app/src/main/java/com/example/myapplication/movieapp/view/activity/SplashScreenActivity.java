@@ -26,11 +26,11 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        authViewModel.getUserById().observe(this, user -> {
+        authViewModel.getCurrentUser().observe(this, user -> {
             if(user == null){
-                SplashScreenActivity.this.usingIntent(MainActivity.class);
+                usingIntent(MainActivity.class);
             }else{
-                SplashScreenActivity.this.usingIntent(MainWindowActivity.class);
+                usingIntent(MainWindowActivity.class);
             }
         });
     }

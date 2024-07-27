@@ -23,15 +23,22 @@ public class InternetReceiver extends BroadcastReceiver {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             View layout_dialog = LayoutInflater.from(context).inflate(R.layout.check_internet_dialog, null);
             builder.setView(layout_dialog);
-            MaterialButton retryButton = layout_dialog.findViewById(R.id.retryButton);
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            alertDialog.setCancelable(false);
-
-            retryButton.setOnClickListener(view -> {
-                alertDialog.dismiss();
-                onReceive(context, intent);
-            });
+            initAlertDialog(builder, layout_dialog, context, intent);
         }
+    }
+
+    private void initAlertDialog(AlertDialog.Builder builder, View layout_dialog, Context context, Intent intent){
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        alertDialog.setCancelable(false);
+        retryInternet(alertDialog, layout_dialog, context, intent);
+    }
+
+    private void retryInternet(AlertDialog alertDialog, View layout_dialog, Context context, Intent intent){
+        MaterialButton retryButton = layout_dialog.findViewById(R.id.retryButton);
+        retryButton.setOnClickListener(view -> {
+            alertDialog.dismiss();
+            onReceive(context, intent);
+        });
     }
 }

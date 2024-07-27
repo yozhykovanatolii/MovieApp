@@ -9,8 +9,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -106,7 +104,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getDataAboutUser(){
-        authViewModel.getUserById().observe(getViewLifecycleOwner(), user -> {
+        authViewModel.getCurrentUser().observe(getViewLifecycleOwner(), user -> {
             if(user != null){
                 initComponentsData(user);
             }
@@ -289,18 +287,20 @@ public class ProfileFragment extends Fragment {
     private void updatePhoto(){
         if(urlPhoto != null){
             currentUser.setPhoto(urlPhoto.toString());
-            authViewModel.saveImageInStorage(currentUser);
+            authViewModel.saveUserPhotoInFirebaseStorage(currentUser);
         }else{
-            authViewModel.updateUser(currentUser);
+            authViewModel.saveUserInFirestore(currentUser);
         }
         updateProfileButton.finished();
         Toast.makeText(getContext(), "Profile was updated", Toast.LENGTH_LONG).show();
+        /*
         refreshIconOnNavigationBottom();
         getAuthorizationToken();
+         */
     }
 
     private void getAuthorizationToken(){
-        authViewModel.getAuthorizationUserToken(currentUser.getEmail(), currentUser.getPassword()).observe(getViewLifecycleOwner(), new Observer<String>() {
+        authViewModel.getAuthorizationToken(currentUser.getEmail(), currentUser.getPassword()).observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String token) {
                 if(token != null){

@@ -66,14 +66,18 @@ public class SearchMovieFragment extends Fragment implements RecyclerInterface {
 
             @Override
             public boolean onQueryTextChange(String title) {
-                if(!title.isEmpty()){
-                    getMovieByTitle(title);
-                }else{
-                    getNowPlayingMovie();
-                }
+                checkTitle(title);
                 return true;
             }
         });
+    }
+
+    private void checkTitle(String title){
+        if(!title.isEmpty()){
+            getMovieByTitle(title);
+        }else{
+            getNowPlayingMovie();
+        }
     }
 
     private void getMovieByTitle(String title){

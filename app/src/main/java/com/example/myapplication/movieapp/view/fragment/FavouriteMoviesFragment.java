@@ -54,7 +54,7 @@ public class FavouriteMoviesFragment extends Fragment implements RecyclerInterfa
     }
 
     private void getFavouriteMovies(){
-        movieViewModel.getFavouriteFilms().observe(getViewLifecycleOwner(), movies -> {
+        movieViewModel.getUserFavouriteFilms().observe(getViewLifecycleOwner(), movies -> {
             if(movies != null){
                 getMovieById(movies);
             }

@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String password;
     private String email;
     private String photo;
-    private List<Integer> favouriteCars = new ArrayList<>();
+    private List<Integer> favouriteMovies = new ArrayList<>();
 
     public User(){}
 
@@ -71,11 +71,8 @@ public class User implements Serializable {
         this.photo = photo;
     }
 
-    public List<Integer> getFavouriteCars() {
-        return favouriteCars;
+    public List<Integer> getFavouriteMovies() {
+        return favouriteMovies;
     }
 
-    public void setFavouriteCars(List<Integer> favouriteCars) {
-        this.favouriteCars = favouriteCars;
-    }
 }

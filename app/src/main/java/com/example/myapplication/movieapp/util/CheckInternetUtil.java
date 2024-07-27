@@ -8,9 +8,6 @@ public class CheckInternetUtil {
     public static String getNetworkInfo(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if(networkInfo != null){
-            return "connected";
-        }
-        return "disconnected";
+        return networkInfo != null ? "connected": "disconnected";
     }
 }

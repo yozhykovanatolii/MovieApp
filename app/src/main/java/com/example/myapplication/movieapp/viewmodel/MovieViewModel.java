@@ -1,13 +1,10 @@
 package com.example.myapplication.movieapp.viewmodel;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.myapplication.movieapp.model.firebase.User;
 import com.example.myapplication.movieapp.model.remote.Movie;
 import com.example.myapplication.movieapp.model.repository.MovieRepository;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +38,8 @@ public class MovieViewModel extends ViewModel {
         return movieRepository.searchFilms(query);
     }
 
-    public LiveData<List<Integer>> getFavouriteFilms(){
-        return movieRepository.getFavouriteMovies();
-    }
-
-    public LiveData<User> getCurrentUser(){
-        return movieRepository.getCurrentUser();
+    public LiveData<List<Integer>> getUserFavouriteFilms(){
+        return movieRepository.getUserFavouriteMovies();
     }
 
     public void updateFavouriteFilms(List<Integer> films){

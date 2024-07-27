@@ -7,8 +7,6 @@ import androidx.lifecycle.ViewModel;
 import com.example.myapplication.movieapp.model.firebase.User;
 import com.example.myapplication.movieapp.model.repository.AuthRepository;
 
-import java.util.regex.Pattern;
-
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
@@ -23,23 +21,19 @@ public class AuthViewModel extends ViewModel {
     }
 
     public void createUserWithEmailAndPassword(User newUser){
-        authRepository.createUserWithEmailAndPassword(newUser);
+        authRepository.createFirebaseUserByEmailAndPassword(newUser);
     }
 
-    public void saveImageInStorage(User user){
-        authRepository.saveImageInStorage(user);
-    }
-
-    public void reauthenticatedUser(String email, String password){
-        authRepository.reauthenticatedUser(email, password);
+    public void saveUserPhotoInFirebaseStorage(User user){
+        authRepository.saveUserPhotoInFirebaseStorage(user);
     }
 
     public void signOut(){
         authRepository.signOut();
     }
 
-    public LiveData<User> getUserById(){
-        return authRepository.getUserById();
+    public LiveData<User> getCurrentUser(){
+        return authRepository.getCurrentUser();
     }
 
     public LiveData<User> getUserByLogin(String login){
@@ -54,52 +48,36 @@ public class AuthViewModel extends ViewModel {
         return authRepository.getUserEmailByLoginAndPassword(login, password);
     }
 
-    public LiveData<String> getAuthorizationUserToken(String email, String password){
-        return authRepository.getAuthorizationUserToken(email, password);
+    public LiveData<String> getAuthorizationToken(String email, String password){
+        return authRepository.getAuthorizationToken(email, password);
     }
 
-    public void updatePasswordInFirebaseUser(User user, String newPassword){
-        authRepository.updatePasswordInFirebaseUser(user, newPassword);
+    public void updateFirebaseUserPassword(User user, String newPassword){
+        authRepository.updateFirebaseUserPassword(user, newPassword);
     }
 
     public void updateEmailAndPassword(String newEmail, String newPassword, String email, String password){
-        authRepository.updateEmailAndPassword(newEmail, newPassword, email, password);
+        authRepository.updateFirebaseUserEmailAndPassword(newEmail, newPassword, email, password);
     }
 
-    public void updateUser(User user){
-        authRepository.updateUser(user);
+    public void saveUserInFirestore(User user){
+        authRepository.saveUserInFirestore(user);
     }
 
     public LiveData<Boolean> isPasswordConfirm(String newPassword, String confirmPassword){
-        if(isPasswordsEqual(newPassword, confirmPassword)){
-            return new MutableLiveData<>(true);
-        }else{
-            return new MutableLiveData<>(false);
-        }
+        return new MutableLiveData<>(isPasswordsEqual(newPassword, confirmPassword));
     }
 
     public LiveData<Boolean> isPasswordWriteCorrect(String password){
-        if(isPasswordLargeThanOrEqualEight(password)){
-            return new MutableLiveData<>(true);
-        }else{
-            return new MutableLiveData<>(false);
-        }
+        return new MutableLiveData<>(isPasswordLargeThanOrEqualEight(password));
     }
 
     public LiveData<Boolean> isEmailWriteCorrect(String email){
-        if(isEmailHasSignAndGmail(email)){
-            return new MutableLiveData<>(true);
-        }else{
-            return new MutableLiveData<>(false);
-        }
+        return new MutableLiveData<>(isEmailHasSignAndGmail(email));
     }
 
     public LiveData<Boolean> isFullNameWriteCorrect(String fullName){
-        if(isFullNameHasNumbersAndSpecialSymbols(fullName)){
-            return new MutableLiveData<>(false);
-        }else{
-            return new MutableLiveData<>(true);
-        }
+        return new MutableLiveData<>(isFullNameHasNumbersAndSpecialSymbols(fullName));
     }
 
     public boolean isPasswordsEqual(String newPassword, String confirmPassword){
@@ -112,11 +90,6 @@ public class AuthViewModel extends ViewModel {
 
     public boolean isEmailHasSignAndGmail(String email){
         return email.contains("@gmail.com") && !email.startsWith("@gmail.com");
-    }
-
-    public boolean isPhoneNumberCorrect(String phoneNumber){
-        String pattern = "^\\+380\\d{9}$";
-        return Pattern.matches(pattern, phoneNumber);
     }
 
     public boolean isFullNameHasNumbersAndSpecialSymbols(String fullName){

@@ -11,19 +11,13 @@ import com.example.myapplication.movieapp.model.firebase.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import java.util.Objects;
-import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
@@ -39,21 +33,25 @@ public class AuthRepository {
         this.firebaseStorage = firebaseStorage;
     }
 
-    public LiveData<User> getUserById(){
+    public LiveData<User> getCurrentUser(){
         MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser != null){
-            firestore.collection("users").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    userMutableLiveData.setValue(task.getResult().toObject(User.class));
-                }else{
-                    userMutableLiveData.setValue(null);
-                }
-            });
-        }else{
+        if(firebaseUser == null){
             userMutableLiveData.setValue(null);
+            return userMutableLiveData;
         }
+        loadUserFromFirestore(firebaseUser.getUid(), userMutableLiveData);
         return userMutableLiveData;
+    }
+
+    private void loadUserFromFirestore(String userId, MutableLiveData<User> userMutableLiveData){
+        firestore.collection("users").document(userId).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                userMutableLiveData.setValue(task.getResult().toObject(User.class));
+            }else{
+                userMutableLiveData.setValue(null);
+            }
+        });
     }
 
     public LiveData<User> getUserByEmail(String email){
@@ -98,48 +96,34 @@ public class AuthRepository {
         return email;
     }
 
-    public LiveData<String> getAuthorizationUserToken(String email, String password){
+    public LiveData<String> getAuthorizationToken(String email, String password){
         MutableLiveData<String> token = new MutableLiveData<>();
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if(!task.isSuccessful()){
                 token.setValue(null);
-                Log.i("Exceptions", "Error", task.getException());
+                Log.i("AuthorizationToken", "Exception:", task.getException());
             }else{
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                token.setValue(firebaseUser.getUid());
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                token.setValue(currentUser.getUid());
             }
         });
         return token;
     }
 
-    public void updatePasswordInFirebaseUser(User user, String newPassword){
+    public void updateFirebaseUserPassword(User user, String newPassword){
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), user.getPassword());
         if(firebaseUser != null){
             firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
                     firebaseUser.updatePassword(newPassword);
-                    updatePasswordInFirestore(newPassword, user.getId());
+                    updateUserPasswordInFirestore(newPassword, user.getId());
                 }
             });
         }
     }
 
-    public void reauthenticatedUser(String email, String password){
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
-        if(firebaseUser != null){
-            firebaseUser.reauthenticate(credential).addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    System.out.println("Perfect");
-                }else{
-                    System.out.println("Bad luck");
-                }
-            });
-        }
-    }
-
-    private void updatePasswordInFirestore(String newPassword, String userId){
+    private void updateUserPasswordInFirestore(String newPassword, String userId){
         firestore.collection("users").document(userId).update("password", newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -150,21 +134,21 @@ public class AuthRepository {
         });
     }
 
-    public void createUserWithEmailAndPassword(User newUser){
+    public void createFirebaseUserByEmailAndPassword(User newUser){
         firebaseAuth.createUserWithEmailAndPassword(newUser.getEmail(), newUser.getPassword()).addOnCompleteListener(task -> {
             if(!task.isSuccessful()){
-                Log.i("Exceptions", "Error", task.getException());
+                Log.i("FirebaseUser", "Exception:", task.getException());
             }else{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
                     newUser.setId(user.getUid());
-                    saveImageInStorage(newUser);
+                    saveUserPhotoInFirebaseStorage(newUser);
                 }
             }
         });
     }
 
-    public void updateEmailAndPassword(String newEmail, String newPassword, String email, String password){
+    public void updateFirebaseUserEmailAndPassword(String newEmail, String newPassword, String email, String password){
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
         if(firebaseUser != null){
@@ -174,38 +158,28 @@ public class AuthRepository {
                     firebaseUser.updateEmail(newEmail);
                 }
             });
-        }else{
-            System.out.println("Error Firebase User");
         }
     }
 
-    public void updateUser(User user){
-        firestore.collection("users").document(user.getId()).set(user).addOnCompleteListener(task -> {
-            if(!task.isSuccessful()){
-                Log.i("UpdateUser", "Something wrong", task.getException());
-            }
-        });
-    }
-
-    public void saveImageInStorage(User user){
-        Uri image = Uri.parse(user.getPhoto());
+    public void saveUserPhotoInFirebaseStorage(User newUser){
+        Uri image = Uri.parse(newUser.getPhoto());
         StorageReference storageReference = firebaseStorage.getReference().child("image/" + image.getLastPathSegment());
         storageReference.putFile(image).addOnCompleteListener(task -> {
             if(task.isSuccessful()){
                 storageReference.getDownloadUrl().addOnCompleteListener(task1 -> {
-                    user.setPhoto(task1.getResult().toString());
-                    signUp(user);
+                    newUser.setPhoto(task1.getResult().toString());
+                    saveUserInFirestore(newUser);
                 });
             }else{
-                Log.i("Errors", "Exception", task.getException());
+                Log.i("SaveUserPhoto", "Exception:", task.getException());
             }
         });
     }
 
-    public void signUp(User newUser){
+    public void saveUserInFirestore(User newUser){
         firestore.collection("users").document(newUser.getId()).set(newUser).addOnCompleteListener(task -> {
             if(!task.isSuccessful()){
-                Log.i("SignUp", "Error", task.getException());
+                Log.i("SaveUser", "Exception:", task.getException());
             }
         });
     }
@@ -213,5 +187,4 @@ public class AuthRepository {
     public void signOut(){
         firebaseAuth.signOut();
     }
-
 }

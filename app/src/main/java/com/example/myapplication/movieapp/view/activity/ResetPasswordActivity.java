@@ -11,12 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.myapplication.movieapp.R;
@@ -156,7 +151,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void getAuthorizationToken(String newPassword){
-        authViewModel.getAuthorizationUserToken(user.getEmail(), user.getPassword()).observe(this, id -> {
+        authViewModel.getAuthorizationToken(user.getEmail(), user.getPassword()).observe(this, id -> {
             if(id != null){
                 updatePassword(newPassword);
             }
@@ -164,7 +159,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     }
 
     private void updatePassword(String newPassword){
-        authViewModel.updatePasswordInFirebaseUser(user, newPassword);
+        authViewModel.updateFirebaseUserPassword(user, newPassword);
         authViewModel.signOut();
         Toast.makeText(getApplicationContext(), "Password update", Toast.LENGTH_LONG).show();
         goToMainActivity();
@@ -174,7 +169,4 @@ public class ResetPasswordActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
-
-
 }

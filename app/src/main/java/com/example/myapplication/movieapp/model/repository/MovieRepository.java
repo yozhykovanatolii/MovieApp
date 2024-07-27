@@ -10,11 +10,8 @@ import com.example.myapplication.movieapp.model.firebase.User;
 import com.example.myapplication.movieapp.model.remote.ApiPoint;
 import com.example.myapplication.movieapp.model.remote.Movie;
 import com.example.myapplication.movieapp.model.remote.Result;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -53,6 +50,7 @@ public class MovieRepository {
 
             @Override
             public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                topRatedFilms.setValue(null);
                 Log.i("TopRatedFilms", Objects.requireNonNull(t.getMessage()));
             }
         });
@@ -73,6 +71,7 @@ public class MovieRepository {
 
             @Override
             public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                nowPlayingFilms.setValue(null);
                 Log.i("NowPlayingFilms", Objects.requireNonNull(t.getMessage()));
             }
         });
@@ -93,6 +92,7 @@ public class MovieRepository {
 
             @Override
             public void onFailure(@NonNull Call<Movie> call, @NonNull Throwable t) {
+                movieMutableLiveData.setValue(null);
                 Log.i("FindFilmById", Objects.requireNonNull(t.getMessage()));
             }
         });
@@ -100,32 +100,33 @@ public class MovieRepository {
     }
 
     public LiveData<List<Movie>> searchFilms(String query){
-        MutableLiveData<List<Movie>> films = new MutableLiveData<>();
+        MutableLiveData<List<Movie>> foundFilms = new MutableLiveData<>();
         apiPoint.searchMovie(query).enqueue(new Callback<Result>() {
             @Override
             public void onResponse(@NonNull Call<Result> call, @NonNull Response<Result> response) {
                 if(response.isSuccessful() && !Objects.requireNonNull(response.body()).getMovies().isEmpty()){
-                    films.setValue(response.body().getMovies());
+                    foundFilms.setValue(response.body().getMovies());
                 }else{
-                    films.setValue(null);
+                    foundFilms.setValue(null);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Result> call, @NonNull Throwable t) {
+                foundFilms.setValue(null);
                 Log.i("SearchFilm", Objects.requireNonNull(t.getMessage()));
             }
         });
-        return films;
+        return foundFilms;
     }
 
-    public LiveData<List<Integer>> getFavouriteMovies(){
+    public LiveData<List<Integer>> getUserFavouriteMovies(){
         MutableLiveData<List<Integer>> favouriteMovies = new MutableLiveData<>();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if(firebaseUser != null){
             firestore.collection("users").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
                 if(task.isSuccessful()){
-                    favouriteMovies.setValue(Objects.requireNonNull(task.getResult().toObject(User.class)).getFavouriteCars());
+                    favouriteMovies.setValue(Objects.requireNonNull(task.getResult().toObject(User.class)).getFavouriteMovies());
                 }else{
                     favouriteMovies.setValue(null);
                 }
@@ -145,22 +146,5 @@ public class MovieRepository {
                 }
             });
         }
-    }
-
-    public LiveData<User> getCurrentUser(){
-        MutableLiveData<User> userMutableLiveData = new MutableLiveData<>();
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if(firebaseUser != null){
-            firestore.collection("users").document(firebaseUser.getUid()).get().addOnCompleteListener(task -> {
-                if(task.isSuccessful()){
-                    userMutableLiveData.setValue(task.getResult().toObject(User.class));
-                }else{
-                    userMutableLiveData.setValue(null);
-                }
-            });
-        }else{
-            userMutableLiveData.setValue(null);
-        }
-        return userMutableLiveData;
     }
 }
